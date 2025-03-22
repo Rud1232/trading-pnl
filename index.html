@@ -3,31 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading P&L Report</title>
+    <title>Professional Trading P&L Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        table { width: 80%; margin: auto; border-collapse: collapse; }
-        th, td { padding: 10px; border: 1px solid black; }
-        th { background-color: #333; color: white; }
+        body { font-family: 'Arial', sans-serif; background-color: #121212; color: #ffffff; margin: 0; padding: 0; }
+        .container { max-width: 900px; margin: 20px auto; background: #1e1e1e; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1); }
+        h1 { text-align: center; color: #00c853; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #232323; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px; border: 1px solid #333; text-align: center; color: white; }
+        th { background: #00c853; }
+        .profit { color: #00ff00; }
+        .loss { color: #ff4444; }
     </style>
 </head>
 <body>
-    <h1>Trading P&L Report</h1>
-    <table id="pnlTable">
-        <thead>
+    <div class="container">
+        <h1>Trading Profit & Loss Dashboard</h1>
+        <canvas id="pnlChart" width="400" height="200"></canvas>
+        <table>
             <tr>
                 <th>Date</th>
-                <th>Trade Type</th>
-                <th>Entry Price</th>
-                <th>Exit Price</th>
-                <th>P&L ($)</th>
-                <th>Net P&L ($)</th>
+                <th>Trade</th>
+                <th>Qty</th>
+                <th>Buy Price</th>
+                <th>Sell Price</th>
+                <th>Profit/Loss ($)</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr><td>2025-03-01</td><td>Buy</td><td>100.50</td><td>105.20</td><td>470</td><td>460</td></tr>
-            <tr><td>2025-03-02</td><td>Sell</td><td>78.30</td><td>76.00</td><td>-230</td><td>-240</td></tr>
-        </tbody>
-    </table>
+            <tr><td>Mar 18</td><td>BTC/USD</td><td>2</td><td>50,000</td><td>51,500</td><td class="profit">+3000</td></tr>
+            <tr><td>Mar 19</td><td>ETH/USD</td><td>5</td><td>3,200</td><td>3,150</td><td class="loss">-250</td></tr>
+            <tr><td>Mar 20</td><td>AAPL</td><td>10</td><td>150</td><td>155</td><td class="profit">+50</td></tr>
+            <tr><td>Mar 21</td><td>NIFTY</td><td>1 Lot</td><td>19,750</td><td>19,900</td><td class="profit">+150</td></tr>
+            <tr><td>Mar 22</td><td>TSLA</td><td>3</td><td>900</td><td>870</td><td class="loss">-90</td></tr>
+        </table>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('pnlChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Mar 18', 'Mar 19', 'Mar 20', 'Mar 21', 'Mar 22'],
+                datasets: [{
+                    label: 'Profit/Loss ($)',
+                    data: [3000, -250, 50, 150, -90],
+                    backgroundColor: function(context) {
+                        return context.dataIndex % 2 === 0 ? 'green' : 'red';
+                    },
+                    borderColor: 'white',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
 </body>
 </html>
+
